@@ -1,0 +1,42 @@
+POST http://localhost:7777/events
+Content-Type: application/json
+
+{
+    "title":"Programmer Xp++ Exclusive",
+    "details":"Evento de + experiência para programadores!",
+    "maximumAttendees":1
+    
+    }
+
+###
+
+POST http://localhost:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346/attendees
+Content-Type: application/json
+
+{
+    "name": "Agrifa Gertyutio",
+    "email":"agrger@ig.com.br"
+}
+
+
+### - Get event 
+
+GET http://127.0.0.1:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346
+Content-Type: application/json
+
+### - BADGE
+
+GET http://localhost:7777/attendees/2/badge
+Content-Type: text/plain
+
+
+### - CheckIn
+
+GET http://127.0.0.1:7777/attendees/4/checkin
+Content-Type: text/plain
+
+
+### - Get EVENT ATTENDEES
+
+GET http://127.0.0.1:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346/attendees
+Content-Type: application/json
