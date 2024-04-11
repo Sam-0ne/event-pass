@@ -5,12 +5,12 @@ import { prisma } from "../lib/prisma";
 
 export default async function getEventAttendees(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
-    .get('/events/:eventId/attendees', {
+    .get('/events/:eventSlug/attendees', {
         schema: {
-            summary: 'Gets attendees registered for given event',
+            summary: 'Gets attendees registered from given URL slug',
             tags: ['events'],
             params: z.object({
-                eventId: z.string().uuid(),
+                eventSlug: z.string(),
             }),
             querystring : z.object({
                 query: z.string().optional().nullish(),
@@ -33,9 +33,20 @@ export default async function getEventAttendees(app: FastifyInstance) {
 
         }
     }, async (request, reply) => {
-        const { eventId } = request.params;
+        const { eventSlug } = request.params;
+        console.log(eventSlug);
         const { query } = request.query;
-
+        console.log(query);
+        const getEventId = await prisma.event.findUnique({
+            select: {
+                id: true,                
+            },
+            where: {
+                slug: eventSlug,
+            }
+        })
+        console.log(getEventId)
+        console.log(getEventId)
         const attendees = await prisma.attendee.findMany({
             select: {
                 id: true,
@@ -46,19 +57,19 @@ export default async function getEventAttendees(app: FastifyInstance) {
                 checkIn: true,
             },
         where: query ? {
-            eventId,
+            eventId:getEventId?.id,
             name: {
                 contains: query,
-            }
+            },
         } : {
-            eventId,
+            eventId:getEventId?.id,
         },
         orderBy: {
             registryDate: 'asc'
         }
         })
 
-        if (attendees == null){
+        if (getEventId == null){
             const error = new Error("No attendee conforms to the criteria given by the user agent.");
             (error as any).status = 406;
             throw error; 

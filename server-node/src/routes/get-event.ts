@@ -6,12 +6,12 @@ import { prisma } from "../lib/prisma";
 
 export default async function getEvent(app:FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
-        .get('/events/:eventId', {
+        .get('/events/:eventSlug', {
             schema: {
-                summary:'Gets data from given eventId (UUID)',
+                summary:'Gets event data from given URL slug',
                 tags: ['events'],
                 params:z.object({
-                    eventId: z.string().uuid(),    
+                    eventSlug: z.string(),    
                 }),
                 response:{
                     200:z.object({
@@ -27,7 +27,7 @@ export default async function getEvent(app:FastifyInstance) {
                 }
             }
         } ,async (request, reply) => {
-            const { eventId } = request.params;
+            const { eventSlug } = request.params;
             
             const event = await prisma.event.findUnique({
                 select: {
@@ -42,7 +42,7 @@ export default async function getEvent(app:FastifyInstance) {
                 },
                 
                 where: {
-                    id: eventId,
+                    slug: eventSlug,
                 }
                 
             })
