@@ -24,7 +24,7 @@ model Attendee {
   email        String
   registryDate DateTime @default(now()) @map("registry_date")
   eventId      String   @map("event_id")
-  event        Event    @relation(fields: [eventId], references: [id])
+  event        Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   checkIn      DateTime? @map("check_in")
 
   @@unique([eventId, email])

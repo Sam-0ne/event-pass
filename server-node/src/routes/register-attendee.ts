@@ -7,6 +7,8 @@ export default async function registerAttendee(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
     .post('/events/:eventId/attendees', {
         schema: {
+            summary: 'Create an attendee for given eventId (UUID)',
+            tags: ['attendees'],
             body: z.object({
                 name: z.string().min(4),
                 email: z.string().email(),

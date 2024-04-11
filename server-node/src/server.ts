@@ -1,5 +1,7 @@
 import fastify from "fastify";
-import { serializerCompiler, validatorCompiler, ZodTypeProvider } from "fastify-type-provider-zod";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
+import { serializerCompiler, validatorCompiler, jsonSchemaTransform, ZodTypeProvider } from "fastify-type-provider-zod";
 import createEvent from "./routes/create-event";
 import registerAttendee from "./routes/register-attendee";
 import getEvent from "./routes/get-event";
@@ -7,8 +9,24 @@ import getBadge from "./routes/get-badge";
 import checkIn from "./routes/checkin";
 import getEventAttendees from "./routes/get-event-attendees";
 
-const app = fastify();
+export const app = fastify();
+app.register(fastifySwagger, {
+    swagger:{
+        consumes: ['application/json'],
+        produces: ['application/json'],
+        info:{
+            title: 'event.pass',
+            description: 'Back-end API specifications for event.pass application.',
+            version: '1.0.0'
+        },
+    },
+    transform: jsonSchemaTransform,
+})
 
+
+app.register(fastifySwaggerUi, {
+    routePrefix: '/docs'
+})
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
