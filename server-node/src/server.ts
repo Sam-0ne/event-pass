@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import fastifyCors from "@fastify/cors";
 import { serializerCompiler, validatorCompiler, jsonSchemaTransform, ZodTypeProvider } from "fastify-type-provider-zod";
 import createEvent from "./routes/create-event";
 import registerAttendee from "./routes/register-attendee";
@@ -24,7 +25,9 @@ app.register(fastifySwagger, {
     transform: jsonSchemaTransform,
 })
 
-
+app.register(fastifyCors,{
+    origin:'*',
+})
 app.register(fastifySwaggerUi, {
     routePrefix: '/docs'
 })
@@ -44,7 +47,7 @@ app.get('/', () => {
 
 app.setErrorHandler(errorHandler);
 
-app.listen({port: 7777}).then(() => {
+app.listen({port: 7777, host: '0.0.0.0'}).then(() => {
     console.log('HTTP server running....')
 
 })

@@ -2,7 +2,7 @@ POST http://localhost:7777/events
 Content-Type: application/json
 
 {
-    "title":"Programmer Xp++ Exclusive",
+    "title":69,
     "details":"Evento de + experiência para programadores!",
     "maximumAttendees":1
     
@@ -10,33 +10,33 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346/attendees
+POST http://localhost:7777/events/devops-summit/attendees
 Content-Type: application/json
 
 {
-    "name": "Shama Kyeuvo",
-    "email":"Shama@ig.com.br"
+    "name": "Lilevo  Nagarupa",
+    "email":"nagarupa.lilevo@portoweb.com.br"
 }
 
 
 ### - Get event 
 
-GET http://127.0.0.1:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346
+GET http://127.0.0.1:7777/events/devss-summit
 Content-Type: application/json
 
 ### - BADGE
 
-GET http://localhost:7777/attendees/2/badge
+GET http://localhost:7777/attendees/12/badge
 Content-Type: text/plain
 
 
 ### - CheckIn
 
-GET http://127.0.0.1:7777/attendees/9/checkin
+GET http://127.0.0.1:7777/attendees/11/checkin
 Content-Type: text/plain
 
 
 ### - Get EVENT ATTENDEES
 
-GET http://127.0.0.1:7777/events/7e8b7298-b2c4-4343-9703-94cd75098346/attendees?query=g
+GET http://127.0.0.1:7777/events/devops-summit/attendees
 Content-Type: application/json
