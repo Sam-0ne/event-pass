@@ -3,6 +3,7 @@ import z from 'zod';
 import generateSlug from "../utils/slug-generator";
 import { prisma } from "../lib/prisma";
 import { FastifyInstance } from "fastify";
+import { BadRequest, Conflict } from "./_errors";
 
 export default async function createEvent(app: FastifyInstance) {
 
@@ -12,7 +13,7 @@ export default async function createEvent(app: FastifyInstance) {
                 summary: 'Creates an event',
                 tags: ['events'],
                 body: z.object({
-                    title: z.string().min(4),
+                    title: z.coerce.string().min(4),
                     details: z.string().nullable(),
                     maximumAttendees: z.number().int().positive().nullable(),                    
                 }),
@@ -34,9 +35,8 @@ export default async function createEvent(app: FastifyInstance) {
 
             if (sameSlugEvent !== null) {
                 
-                const error = new Error("There is already another event with the same slug.");
-                (error as any).status = 409;
-                throw error;
+                throw new BadRequest("There is already another event with the same URL slug.");
+                
             }
 
             const event = await prisma.event.create({

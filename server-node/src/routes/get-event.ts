@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { prisma } from "../lib/prisma";
+import { BadRequest } from "./_errors";
 
 
 export default async function getEvent(app:FastifyInstance) {
@@ -47,9 +48,8 @@ export default async function getEvent(app:FastifyInstance) {
                 
             })
             if (event == null){
-                const error = new Error("No event conforms to the criteria given by the user agent.");
-                (error as any).status = 406;
-                throw error; 
+                throw new BadRequest("No event conforms to the criteria given by the user agent.");
+                
             }
         
             return reply.status(200).send({event:{

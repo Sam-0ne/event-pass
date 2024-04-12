@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { prisma } from "../lib/prisma";
+import { BadRequest } from "./_errors";
 
 export default async function getBadge(app:FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
@@ -46,9 +47,7 @@ export default async function getBadge(app:FastifyInstance) {
         const checkInURL = new URL(`/attendees/${attendeeId}/checkin`,baseUrl).href
        
         if (attendee === null) {
-            const error = new Error("No registered attendee conforms to the criteria given by the user agent.");
-            (error as any).status = 406;
-            throw error;
+            throw new BadRequest("No registered attendee conforms to the criteria given by the user agent.");
         }
 
         return reply.status(200).send({

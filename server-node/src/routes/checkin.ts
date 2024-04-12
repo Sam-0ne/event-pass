@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z, { number } from "zod";
 import { prisma } from "../lib/prisma";
+import { BadRequest, NotFound } from "./_errors";
 
 export default async function checkIn(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
@@ -40,15 +41,12 @@ export default async function checkIn(app: FastifyInstance) {
         });
 
         if (!attendee) {
-            const error = new Error(`Attendee with ID ${attendeeId} not found.`);
-            (error as any).status = 404;
-            throw error;
+            throw new NotFound(`Attendee with ID ${attendeeId} not found.`);
+            
         }
         
         if (attendee?.checkIn !== null){
-            const error = new Error(`Attendee already checked-in for this event at ${attendee?.checkIn}.`);
-            (error as any).status = 409;
-            throw error;
+            throw new BadRequest(`Attendee already checked-in for this event at ${attendee?.checkIn}.`);
         }
         const checkInTime = new Date();
 

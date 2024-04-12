@@ -8,6 +8,7 @@ import getEvent from "./routes/get-event";
 import getBadge from "./routes/get-badge";
 import checkIn from "./routes/checkin";
 import getEventAttendees from "./routes/get-event-attendees";
+import { errorHandler } from "./utils/error-handler";
 
 export const app = fastify();
 app.register(fastifySwagger, {
@@ -40,6 +41,8 @@ app.register(getEventAttendees);
 app.get('/', () => {
     return "Server Online"
 })
+
+app.setErrorHandler(errorHandler);
 
 app.listen({port: 7777}).then(() => {
     console.log('HTTP server running....')

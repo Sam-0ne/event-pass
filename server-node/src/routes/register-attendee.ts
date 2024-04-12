@@ -2,19 +2,20 @@ import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import z from "zod";
 import { prisma } from "../lib/prisma";
+import { BadRequest} from "./_errors";
 
 export default async function registerAttendee(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
-    .post('/events/:eventId/attendees', {
+    .post('/events/:eventSlug/attendees', {
         schema: {
-            summary: 'Create an attendee for given eventId (UUID)',
+            summary: 'Create an attendee for given event URL slug link',
             tags: ['attendees'],
             body: z.object({
                 name: z.string().min(4),
                 email: z.string().email(),
             }),
             params: z.object({
-                eventId: z.string().uuid(),
+                eventSlug: z.string(),
             }),
             response:{
                 201: z.object({
@@ -23,35 +24,46 @@ export default async function registerAttendee(app: FastifyInstance) {
             }
         }
     }, async (request, reply) => {
-        const { eventId } = request.params
-        const { name, email } = request.body
+        const { eventSlug } = request.params;
+        const { name, email } = request.body;
+
+        const getEventId = await prisma.event.findUnique({
+            select: {
+                id: true,                
+            },
+            where: {
+                slug: eventSlug,
+            }
+        })
+
+        if (getEventId == null){
+            throw new BadRequest("No attendee conforms to the criteria given by the user agent.");             
+        }
 
         const alreadyRegistered = await prisma.attendee.findUnique({
             where: {
                 eventId_email: {
-                    email,
-                    eventId
+                    email: email,
+                    eventId: getEventId.id,
                 }
             }
         });
 
         if (alreadyRegistered !== null) {
                 
-            const error = new Error("Attendee is already registered for this event.");
-            (error as any).status = 409;
-            throw error;
+            throw new BadRequest("Attendee is already registered for this event.");            
         }
 
         const [event, numberOfRegisteredAttendees] = await Promise.all([
             prisma.event.findUnique({
                 where: {
-                    id: eventId,
+                    id: getEventId.id,
                 }
             }),
 
             prisma.attendee.count({
                 where: {
-                    eventId,
+                    eventId: getEventId.id,
                 }
             })
         ])
@@ -59,16 +71,14 @@ export default async function registerAttendee(app: FastifyInstance) {
        
         if (event?.maximumAttendees && numberOfRegisteredAttendees >= event?.maximumAttendees) {
 
-            const error = new Error("This event has already reached its maximum attendance.");
-            (error as any).status = 409;
-            throw error;
+            throw new BadRequest("This event has already reached its maximum attendance.");
         }
 
         const attendee = await prisma.attendee.create({
             data: {
-                name,
-                email,
-                eventId
+                name: name,
+                email: email,
+                eventId: getEventId.id,
             },
         })
         return reply.status(201).send({ attendeeId: attendee.id})

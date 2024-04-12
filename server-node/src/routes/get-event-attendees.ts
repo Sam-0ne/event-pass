@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify";
 import { number, object, string, z } from "zod";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
 import { prisma } from "../lib/prisma";
+import { BadRequest } from "./_errors";
 
 export default async function getEventAttendees(app: FastifyInstance) {
     app.withTypeProvider<ZodTypeProvider>()
@@ -34,9 +35,7 @@ export default async function getEventAttendees(app: FastifyInstance) {
         }
     }, async (request, reply) => {
         const { eventSlug } = request.params;
-        console.log(eventSlug);
         const { query } = request.query;
-        console.log(query);
         const getEventId = await prisma.event.findUnique({
             select: {
                 id: true,                
@@ -45,8 +44,12 @@ export default async function getEventAttendees(app: FastifyInstance) {
                 slug: eventSlug,
             }
         })
-        console.log(getEventId)
-        console.log(getEventId)
+
+        if (getEventId == null){
+            throw new BadRequest("No event conforms to the criteria given by the user agent.");
+            
+        }
+        
         const attendees = await prisma.attendee.findMany({
             select: {
                 id: true,
@@ -57,23 +60,18 @@ export default async function getEventAttendees(app: FastifyInstance) {
                 checkIn: true,
             },
         where: query ? {
-            eventId:getEventId?.id,
+            eventId:getEventId.id,
             name: {
                 contains: query,
             },
         } : {
-            eventId:getEventId?.id,
+            eventId:getEventId.id,
         },
         orderBy: {
             registryDate: 'asc'
         }
         })
-
-        if (getEventId == null){
-            const error = new Error("No attendee conforms to the criteria given by the user agent.");
-            (error as any).status = 406;
-            throw error; 
-        }
+        
         return reply.status(200).send({registeredAttendees : attendees.length,
             attendees: attendees.map( attendee => {
                 return {
