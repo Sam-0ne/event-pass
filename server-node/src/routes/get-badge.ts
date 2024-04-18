@@ -11,7 +11,7 @@ export default async function getBadge(app:FastifyInstance) {
             summary: 'Gets badge for registered attendee',
             tags:['attendees'],
             params: z.object({
-                attendeeId: z.coerce.number().int().positive()
+                attendeeId: z.string().cuid()
             }),
             response: {
                 200: z.object({

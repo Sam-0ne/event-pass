@@ -11,7 +11,7 @@ export default async function checkIn(app: FastifyInstance) {
             summary: 'Checks-in attendee',
             tags:['check-in'],
             params: z.object({
-                attendeeId: z.coerce.number().int().positive()
+                attendeeId: z.string().cuid()
             }),
             response: {
                 200: z.object({

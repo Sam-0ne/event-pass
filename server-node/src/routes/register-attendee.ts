@@ -19,7 +19,7 @@ export default async function registerAttendee(app: FastifyInstance) {
             }),
             response:{
                 201: z.object({
-                    attendeeId:z.number(),
+                    attendeeId:z.string().cuid(),
                 })
             }
         }

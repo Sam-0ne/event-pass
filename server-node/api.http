@@ -8,35 +8,35 @@ Content-Type: application/json
     
     }
 
-###
+### Register attendee
 
-POST http://localhost:7777/events/devops-summit/attendees
+POST http://localhost:7777/events/js-brasil-2024/attendees
 Content-Type: application/json
 
 {
-    "name": "Lilevo  Nagarupa",
-    "email":"nagarupa.lilevo@portoweb.com.br"
+    "name": "Chris P. Bacon",
+    "email":"bacon@portoweb.com.br"
 }
 
 
 ### - Get event 
 
-GET http://127.0.0.1:7777/events/devss-summit
+GET http://127.0.0.1:7777/events/devops-summit
 Content-Type: application/json
 
 ### - BADGE
 
-GET http://localhost:7777/attendees/12/badge
+GET http://localhost:7777/attendees/ir3ctikut1lszpg5az1qwlvy/badge
 Content-Type: text/plain
 
 
 ### - CheckIn
 
-GET http://127.0.0.1:7777/attendees/11/checkin
+GET http://127.0.0.1:7777/attendees/clv1p9o330001w8i1vyqbt48m/checkin
 Content-Type: text/plain
 
 
 ### - Get EVENT ATTENDEES
 
-GET http://127.0.0.1:7777/events/devops-summit/attendees
+GET http://127.0.0.1:7777/events/js-brasil-2024/attendees?
 Content-Type: application/json

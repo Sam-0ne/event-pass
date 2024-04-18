@@ -21,7 +21,7 @@ export default async function getEventAttendees(app: FastifyInstance) {
                 200:z.object({
                     registeredAttendees: number().int().optional(),
                     attendees: z.array(z.object({
-                        id: z.number().positive().int(),
+                        id: z.string().cuid(),
                         name: z.string().min(4),
                         email: z.string().email(),
                         eventId: z.string().uuid(),

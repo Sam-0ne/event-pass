@@ -19,7 +19,7 @@ model Event {
 }
 
 model Attendee {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(cuid())
   name         String
   email        String
   registryDate DateTime @default(now()) @map("registry_date")
