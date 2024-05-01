@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "attendees" ADD COLUMN "checkIn" DATETIME;
+ALTER TABLE "attendees" ADD COLUMN "checkIn" TIMESTAMP;

@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+
+  postgres:
+    image: postgres:16.2-alpine3.19
+    container_name: db-event-pass
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=eventpass
+    networks:
+      - eventpass
+
+  api-event-pass:
+    build:
+      context: .
+    container_name: api-event-pass
+    ports:
+      - 3001:7777
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@postgres:5432/eventpass
+      - API_BASE_URL=http://localhost:7777
+    depends_on:
+      - postgres
+    networks:
+      - eventpass  
+networks:
+  eventpass:
+    driver: bridge

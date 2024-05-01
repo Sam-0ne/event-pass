@@ -1,12 +1,12 @@
 {
   "name": "server-node",
   "version": "1.0.0",
-  "description": "O pass.in é uma aplicação de **gestão de participantes em eventos presenciais**.",
+  "description": "O event-pass é uma aplicação de **gestão de participantes em eventos presenciais**.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch --env-file .env src/server.ts",
+    "start": "prisma migrate deploy && node dist/server.mjs",
     "build": "tsup src --format esm",
-    "start": " node dist/server.mjs",
+    "dev": "tsx watch --env-file .env src/server.ts",        
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio"
   },
