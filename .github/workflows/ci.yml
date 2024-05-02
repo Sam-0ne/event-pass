@@ -33,3 +33,5 @@ jobs:
       - name: Push image
         run: |
           docker push samuel0/eventpass:${{ steps.generate_sha.outputs.sha }}
+          docker tag samuel0/eventpass:${{ steps.generate_sha.outputs.sha }} samuel0/eventpass:latest
+          docker push samuel0/eventpass:latest
