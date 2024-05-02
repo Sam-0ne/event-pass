@@ -11,6 +11,8 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=eventpass
+    volumes:
+      - 'db:/var/lib/postgresql/data'
     networks:
       - eventpass
 
@@ -30,3 +32,6 @@ services:
 networks:
   eventpass:
     driver: bridge
+
+volumes:
+  db:
