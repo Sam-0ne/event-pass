@@ -63,6 +63,7 @@ export default async function getEventAttendees(app: FastifyInstance) {
             eventId:getEventId.id,
             name: {
                 contains: query,
+                mode: 'insensitive'
             },
         } : {
             eventId:getEventId.id,

@@ -37,7 +37,7 @@ export default async function registerAttendee(app: FastifyInstance) {
         })
 
         if (getEventId == null){
-            throw new BadRequest("No attendee conforms to the criteria given by the user agent.");             
+            throw new BadRequest("No event matches the query.");             
         }
 
         const alreadyRegistered = await prisma.attendee.findUnique({

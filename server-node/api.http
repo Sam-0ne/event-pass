@@ -1,21 +1,21 @@
-POST http://localhost:7777/events
+POST http://localhost:3001/events
 Content-Type: application/json
 
 {
-    "title":69,
-    "details":"Evento de + experiência para programadores!",
-    "maximumAttendees":1
+    "title":"Devops Summit",
+    "details":"Evento top para programadores",
+    "maximumAttendees":200
     
     }
 
 ### Register attendee
 
-POST http://localhost:3001/events/js-brasil-2024/attendees
+POST http://localhost:3001/events/devops-summit/attendees
 Content-Type: application/json
 
 {
-    "name": "Ben Dover",
-    "email":"benD@portoweb.com.br"
+    "name": "Kucano Nagina",
+    "email":"KuNagina@ibest.com.br"
 }
 
 
@@ -26,17 +26,17 @@ Content-Type: application/json
 
 ### - BADGE
 
-GET http://localhost:3001/attendees/clv66fghw0001qoq5untatl9x/badge
+GET http://localhost:3001/attendees/clvon29x50003ki3foplg177i/badge
 Content-Type: text/plain
 
 
 ### - CheckIn
 
-GET http://127.0.0.1:7777/attendees/clv1p9o330001w8i1vyqbt48m/checkin
+GET http://localhost:3001/attendees/clvon29x50003ki3foplg177i/checkin
 Content-Type: text/plain
 
 
 ### - Get EVENT ATTENDEES
 
-GET http://127.0.0.1:3001/events/js-brasil-2024/attendees?
+GET http://127.0.0.1:3001/events/devops-summit/attendees?query=
 Content-Type: application/json

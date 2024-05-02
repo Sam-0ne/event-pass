@@ -1,5 +1,5 @@
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import z from 'zod';
+import z, { string } from 'zod';
 import generateSlug from "../utils/slug-generator";
 import { prisma } from "../lib/prisma";
 import { FastifyInstance } from "fastify";
@@ -19,7 +19,7 @@ export default async function createEvent(app: FastifyInstance) {
                 }),
                 response: {
                     201: z.object({
-                        eventId:z.string().uuid(),
+                        eventId:z.string().uuid(), slug:string()
                     })
                 }
             }
@@ -47,6 +47,6 @@ export default async function createEvent(app: FastifyInstance) {
                     slug: slug,
                 },
             })
-            return reply.status(201).send({eventId: event.id})
+            return reply.status(201).send({eventId: event.id, slug: event.slug })
         })
 }
