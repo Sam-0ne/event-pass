@@ -14,8 +14,8 @@ POST http://localhost:3001/events/devops-summit/attendees
 Content-Type: application/json
 
 {
-    "name": "Kucano Nagina",
-    "email":"KuNagina@ibest.com.br"
+    "name": "Ben Dover",
+    "email":"BenD@myplace.com"
 }
 
 
@@ -26,13 +26,13 @@ Content-Type: application/json
 
 ### - BADGE
 
-GET http://localhost:3001/attendees/clvon29x50003ki3foplg177i/badge
+GET http://localhost:3001/attendees/clvop38v400011bmrkip00m76/badge
 Content-Type: text/plain
 
 
 ### - CheckIn
 
-GET http://localhost:3001/attendees/clvon29x50003ki3foplg177i/checkin
+GET http://localhost:3001/attendees/clvop38v400011bmrkip00m76/checkin
 Content-Type: text/plain
 
 
