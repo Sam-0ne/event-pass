@@ -1,0 +1,6 @@
+# Keep environment variables out of version control
+.env
+*.tfvars
+*.tfvars.json
+*.tfstate
+*.tfstate.*

@@ -6,11 +6,11 @@ services:
     image: postgres:16.2-alpine3.19
     container_name: db-event-pass
     ports: 
-      - 5432:5432
+      - 5432:${POSTGRES_PORT}
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=eventpass
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     volumes:
       - 'db:/var/lib/postgresql/data'
     networks:
@@ -23,7 +23,7 @@ services:
     ports:
       - 3001:7777
     environment:
-      - DATABASE_URL=postgresql://admin:admin@postgres:5432/eventpass
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
       - API_BASE_URL=http://localhost:7777
     depends_on:
       - postgres
